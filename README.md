@@ -1,3 +1,4 @@
+Deploying in a Private Azure Environment using Managed DevOps Pool
 
 In your organization, you may have an Azure environment where all deployed services must be private due to security requirements.
 In this context, it will not be possible to deploy from Azure DevOps or GitHub Actions using Microsoft-hosted DevOps agents, as these agents will not be able to enter a private environment.
