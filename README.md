@@ -77,10 +77,10 @@ In fact, your identity is used to create an agent pool in your Azure DevOps orga
 
 
 3. **Create a Dev Center and a Dev Center project:** <br>
-Before creating a managed devops pool, we must first create a dev center and a dev center project. <br>
+Before creating a managed devops pool, you must first create a dev center and a dev center project. <br>
 For more information on the steps, please refer to the following link: https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/quickstart-azure-portal?view=azure-devops
 
-To do this, we will create a resource group: `RG_MANAGED_DEVOPS_POOL`. <br>
+To  create a dev center and a dev center project, you will create a resource group: `ex RG_MANAGED_DEVOPS_POOL`. <br>
 Then, in your Azure portal, search for "Dev centers" and click on create as follows:
    
    ![1  dev center](https://github.com/user-attachments/assets/71805f1d-5b37-470a-b299-c590839d6668)
