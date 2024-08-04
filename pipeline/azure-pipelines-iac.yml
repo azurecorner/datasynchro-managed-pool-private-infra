@@ -1,0 +1,63 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- none
+# pool: 
+#   name: datasynchro-self-hosted-pool 
+pool: 
+  name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+# pool: 
+#   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+#   demands:
+#   - ImageOverride -equals /subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/Providers/Microsoft.Compute/Locations/westeurope/Publishers/microsoftvisualstudio/ArtifactTypes/VMImage/Offers/visualstudio2022/Skus/vs-2022-ent-latest-win11-n-gen2/versions/latest
+
+# pool: 
+#   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+#   demands:
+#   - ImageOverride -equals /subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/resourceGroups/RG_MANAGED_DEVOPS_POOL/providers/Microsoft.Compute/galleries/datasynchro_compute_gallery/images/windows-agent/versions/latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+- task: TerraformInstaller@0
+  displayName: Install Terraform 1.7.4
+  inputs:
+    terraformVersion: '1.7.4'
+
+- task: TerraformTaskV2@2
+  displayName: Initialyze terraform 
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    commandOptions: '-var-file="dev.tfvars"'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/iac/terraform'
+    backendServiceArm: 'TERRAFORMSP'
+    backendAzureRmResourceGroupName: 'RG_MANAGED_DEVOPS_POOL'
+    backendAzureRmStorageAccountName: 'tfbackendmdpmvp'
+    backendAzureRmContainerName: 'backend-ado-tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTaskV2@2
+  displayName: Plan Terraform
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    commandOptions: '-var-file="dev.tfvars"'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/iac/terraform'
+    environmentServiceNameAzureRM: 'TERRAFORMSP'
+- task: TerraformTaskV4@4
+  displayName: Apply Terraform
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    commandOptions: '-var-file="dev.tfvars"'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/iac/terraform'
+    environmentServiceNameAzureRM: 'TERRAFORMSP'

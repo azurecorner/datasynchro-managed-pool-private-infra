@@ -1,0 +1,103 @@
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: main
+stages:
+- stage: Build
+  displayName: Build Stage
+  jobs:
+  - job: Build
+    displayName: Build Job
+    pool: 
+      name: datasynchro-managed-devops-pool-ado
+      demands:
+      - ImageOverride -equals ubuntu-22.04
+    # pool: 
+    #   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+    # pool: 
+    #   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+    # pool: 
+    #   name: datasynchro-self-hosted-pool
+    # pool:
+    #   vmImage: 'ubuntu-latest'
+    # pool: 
+    #   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+    #   demands:
+    #   - ImageOverride -equals /subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/Providers/Microsoft.Compute/Locations/westeurope/Publishers/microsoftvisualstudio/ArtifactTypes/VMImage/Offers/visualstudio2022/Skus/vs-2022-ent-latest-win11-n-gen2/versions/latest
+    steps:
+    - checkout: self
+    - task: DotNetCoreCLI@2
+      displayName: dotnet restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: dotnet build
+      inputs:
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: dotnet test
+      inputs:
+        command: test
+        projects: '**/*[Uu]nit[Tt]ests/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: dotnet collect code coverage
+      inputs:
+        command: test
+        projects: '**/*[Uu]nit[Tt]ests/*.csproj'
+        arguments: '--collect "Code Coverage"'
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish code coverage results
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*.cobertura.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/_temp/cchtml'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '$(System.DefaultWorkingDirectory)/src/LinuxFunctionApp/LinuxFunctionApp.csproj'
+        arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'FunctionAppCode'
+        publishLocation: 'Container'
+
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: Deploy Job
+    pool: 
+      name: datasynchro-managed-devops-pool-ado
+      demands:
+      - ImageOverride -equals ubuntu-22.04
+    # pool:
+    #   vmImage: 'ubuntu-latest'
+    # pool: 
+    #   name: datasynchro-docker-pool # Name of Docker agent  Pool
+    # pool: 
+    #   name: datasynchro-self-hosted-pool
+    # pool: 
+    #   name: datasynchro-managed-devops-pool-ado # Name of Managed DevOps Pool
+    #   demands:
+    #   - ImageOverride -equals /subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/Providers/Microsoft.Compute/Locations/westeurope/Publishers/microsoftvisualstudio/ArtifactTypes/VMImage/Offers/visualstudio2022/Skus/vs-2022-ent-latest-win11-n-gen2/versions/latest
+    steps:
+    - checkout: self    
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifactName: 'FunctionAppCode'
+        targetPath: $(Build.SourcesDirectory)/FunctionAppCode
+    - task: AzureFunctionApp@1
+      displayName: 'Azure Function App Deploy'
+      inputs:
+        azureSubscription: 'TERRAFORMSP'
+        appType: 'functionApp'
+        appName: 'datasync-funcapp-dev'
+        package: '$(Build.SourcesDirectory)/FunctionAppCode/LinuxFunctionApp.zip'
+        deploymentMethod: 'auto'
+       

@@ -1,0 +1,71 @@
+name: GitHub Actions Worflow src
+run-name: ${{ github.actor }} is deploying src 
+# on: [push]
+on: workflow_dispatch
+
+permissions:
+  id-token: write
+  contents: read
+env:
+  tf_actions_working_dir: src
+jobs:
+  build:
+    name: Build
+    #runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    # runs-on: [self-hosted, ManagedDevOps.Pool=datasynchro-manages-pool-github]
+    runs-on: [self-hosted, ManagedDevOps.Pool=datasynchro-manages-pool-github, ManagedDevOps.ImageOverride=/subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/Providers/Microsoft.Compute/Locations/westeurope/Publishers/microsoftvisualstudio/ArtifactTypes/VMImage/Offers/visualstudio2022/Skus/vs-2022-ent-latest-win11-n-gen2/versions/latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: src
+      - name: Build
+        run: dotnet build
+        working-directory: src
+      - name: Test with the dotnet CLI
+        run: dotnet test
+        working-directory: src
+
+      - name: Publish
+        run: dotnet publish --configuration Release
+        working-directory: src
+    
+      - name: Upload Core artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Core
+          path: |
+            ${{ github.workspace }}/src/LinuxFunctionApp/bin/Release/net8.0/publish/
+            
+      
+  deploy:
+    needs: build
+    # runs-on: self-hosted
+    # runs-on: ubuntu-latest
+    # runs-on: [self-hosted, ManagedDevOps.Pool=datasynchro-manages-pool-github]
+  # runs-on: [self-hosted, ManagedDevOps.Pool=datasynchro-manages-pool-github]
+    runs-on: [self-hosted, ManagedDevOps.Pool=datasynchro-manages-pool-github, ManagedDevOps.ImageOverride=/subscriptions/023b2039-5c23-44b8-844e-c002f8ed431d/Providers/Microsoft.Compute/Locations/westeurope/Publishers/microsoftvisualstudio/ArtifactTypes/VMImage/Offers/visualstudio2022/Skus/vs-2022-ent-latest-win11-n-gen2/versions/latest]
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Core
+          path: ${{ github.workspace }}/artifacts  # Change the path as per your requirement
+
+      - name: Log in to Azure using OIDC
+        uses: azure/login@v1
+        with:
+          client-id: 68b5381d-15a5-4084-8364-f614904bb5f2
+          tenant-id: f12a747a-cddf-4426-96ff-ebe055e215a3
+          subscription-id: 023b2039-5c23-44b8-844e-c002f8ed431d
+        
+      - name: Deploy to Azure Function
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'datasync-funcapp-github'
+          package: ${{ github.workspace }}/artifacts

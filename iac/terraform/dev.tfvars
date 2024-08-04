@@ -1,0 +1,21 @@
+resource_group_name              = "rg-datasync-dev"
+resource_group_location          = "westeurope"
+virtual_network_name             = "vnet-funcapp-dev"
+virtual_network_address_space    = "10.0.0.0/16"
+inbound_subnet_name              = "inboundSubnet"
+inbound_subnet_address_space     = "10.0.0.0/24"
+outbound_subnet_name             = "outboundSubnet"
+outbound_subnet_address_space    = "10.0.1.0/24"
+service_plan_name                = "datasync-asp-dev"
+linux_function_app_name          = "datasync-funcapp-dev"
+storage_account_name             = "storagedatasyncdev"
+storage_account_replication_type = "LRS"
+storage_account_tier             = "Standard"
+os_type                          = "Linux"
+sku_name                         = "P1v2"
+log_analytics_workspace_name     = "la-datasync-dev"
+log_analytics_workspace_sku      = "PerGB2018"
+application_insights_name        = "app-insight-dev"
+
+
+  
