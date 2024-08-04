@@ -3,7 +3,8 @@
 In your organization, you may have an Azure environment where all deployed services must be private due to security requirements.
 In this context, it will not be possible to deploy from Azure DevOps or GitHub Actions using Microsoft-hosted DevOps agents, as these agents will not be able to enter a private environment.
 
-For more information, please refer to the following link: [Microsoft-hosted Agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml).
+For more information, please refer to the following link: <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml" target="_blank">Learn more about Azure DevOps Hosted Agents</a>
+
 
 Several solutions have been considered by the DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
 
