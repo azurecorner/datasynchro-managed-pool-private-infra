@@ -3,8 +3,7 @@
 In your organization, you may have an Azure environment where all deployed services must be private due to security requirements.
 In this context, it will not be possible to deploy from Azure DevOps or GitHub Actions using Microsoft-hosted DevOps agents, as these agents will not be able to enter a private environment.
 
-For more information, please refer to the following link: <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml" target="_blank">Learn more about Azure DevOps Hosted Agents</a>
-
+For more information, please refer to the following link: [Learn more about Azure DevOps Hosted Agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml)
 
 Several solutions have been considered by the DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
 
@@ -18,7 +17,7 @@ In this tutorial, I will show how to configure a Managed DevOps Pools (MDP) and 
 
 The architecture to be deployed is as follows:
 
-A private function app (datasync-funcapp-dev) with a private endpoint on an inboundSubnet (10.0.0.0/24) on the virtual network vnet-funcapp-dev (10.0.0.0/16) with a virtual network integration on an outboundSubnet (10.0.1.0/24) on the same virtual network vnet-funcapp-dev.
+A private function app (datasync-funcapp-dev) with a private endpoint enabled on an inboundSubnet (10.0.0.0/24) on the virtual network vnet-funcapp-dev (10.0.0.0/16) with a virtual network integration on an outboundSubnet (10.0.1.0/24) on the same virtual network vnet-funcapp-dev.
 
 This function app datasync-funcapp-dev connects to a private storage account storagedatasyncdev with a private endpoint enabled on the subnet vnet-funcapp-dev/inboundSubnet.
 
@@ -31,16 +30,16 @@ Figure A
 ## A. Managed DevOps Pools Configuration
 For more information on managed devops pools, please follow the link: https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/overview?view=azure-devops
 
-In this section, we will configure a Managed DevOps Pool step-by-step:<br>
-- **Register the Managed DevOps Pools resource provider in your Azure subscription** <br>
-- **Verify Azure DevOps permissions for the configuration user** <br>
-- **Create a Dev Center and a Dev Center project:** <br>
-- **Create the Managed DevOps Pools resource:** <br>
-- **Configure the image:** <br>
-- **Configure networking:** <br>
-- **Ensure the pool is available in Azure DevOps.** <br>
-- **Configure the build pipeline:** <br>
-- **Complete the configuration:** <br>
+In this section, I will configure a Managed DevOps Pool step-by-step:<br>
+- **Register the Managed DevOps Pools resource provider** <br>
+- **Verify Azure DevOps permissions** <br>
+- **Create a Dev Center and a Dev Center project** <br>
+- **Create the Managed DevOps Pools resource** <br>
+- **Configure the image** <br>
+- **Configure networking** <br>
+- **Ensure the pool is available in Azure DevOps** <br>
+- **Configure the build pipeline** <br>
+- **Complete the configuration** <br>
 
 ### Steps:
 
