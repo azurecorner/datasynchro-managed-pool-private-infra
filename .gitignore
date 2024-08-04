@@ -27,3 +27,6 @@ src/LinuxFunctionAppUnitTests/obj/Debug/net8.0/LinuxFunctionAppUnitTests.Assembl
 /src/LinuxFunctionAppUnitTests/obj/LinuxFunctionAppUnitTests.csproj.nuget.g.props
 /src/LinuxFunctionAppUnitTests/obj/project.assets.json
 /src/LinuxFunctionAppUnitTests/obj/project.nuget.cache
+/.vs
+/src/LinuxFunctionAppUnitTests/bin/Release/net8.0
+/src/LinuxFunctionAppUnitTests/obj/Release/net8.0
