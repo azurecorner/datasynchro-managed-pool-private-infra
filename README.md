@@ -144,7 +144,7 @@ The previously configured pool should be displayed as shown in the following fig
 Managed DevOps Pools offer several options for configuring the images that run on the virtual machines, allowing pipelines to execute in the pool. <br>
 You can create your pool with the following options:
 - Use virtual machine images from Azure Marketplace.
-- Use our own custom images from the Azure Compute Gallery.
+- Use your own custom images from the Azure Compute Gallery.
 - Use the same images as the Microsoft-hosted agents in Azure Pipelines.
 
 Managed DevOps Pools can be configured with a single image or multiple images (by specifying an alias). <br>
@@ -163,9 +163,9 @@ Click "Add" then "Apply."
    ![4c  Configure image](https://github.com/user-attachments/assets/306a0333-9437-4e21-9be5-0a678cf3782c)
 
 7. **Configuring the Build Pipeline:** <br>
-   Your Managed DevOps Pool configuration is now ready and operational. In this section, I will create a pipeline in Azure DevOps using the Managed DevOps Pools.
+   My Managed DevOps Pool configuration is now ready and operational. In this section, I will create a pipeline in Azure DevOps using the Managed DevOps Pools.
 
-   To do this, simply replace the default image (`vmImage: ubuntu-latest`) with our Managed DevOps Pool (`name: datasynchro-managed-devops-pool-ado`).
+   To do this, simply replace the default image (`vmImage: ubuntu-latest`) with your Managed DevOps Pool (`name: datasynchro-managed-devops-pool-ado`).
 
    ```yaml
    # In the following configuration, replace vmImage: ubuntu-latest (where ubuntu-latest is the default image) with name: datasynchro-managed-devops-pool-ado (where datasynchro-managed-devops-pool-ado is the name of our Managed DevOps Pool)
@@ -177,8 +177,8 @@ Click "Add" then "Apply."
 
 ## B. Using the Managed DevOps Pool in a Private Network
 
-In Part A, I completed the configuration of the Managed DevOps Pool, which is operational for deployments in an unrestricted network architecture. 
-Indeed, in our architecture setup (see Figure A), the function app and the storage account are private, so the default agents like `ubuntu-latest` or `windows-latest` will not be able to deploy code to the function app because the VMs cannot access our private network.
+In Part A, I completed the configuration of the Managed DevOps Pools, which is operational for deployments in an unrestricted network architecture. 
+Indeed, in the architecture setup (see Figure A), the function app and the storage account are private, so the default agents like `ubuntu-latest` or `windows-latest` will not be able to deploy code to the function app because the virtual machines behind cannot access the private network.
 
 To resolve this issue, I will add the Managed DevOps Pools to a virtual network (internal network).
 
@@ -191,7 +191,7 @@ Click "Configure" and select our virtual network and subnet.
 
 2. **Completing the Configuration:**
 
-Our Managed DevOps Pool is configured in a VNet (`managed-devops-pool-vnet`) which is different from the VNet where our function app is configured (`vnet-funcapp-dev`).
+The Managed DevOps Pools is configured in a virtual network (`managed-devops-pool-vnet`) which is different from the virtual network where the function app is configured (`vnet-funcapp-dev`).
 
 Therefore, I need to set up peering between the two virtual networks in both directions (virtual network `managed-devops-pool-vnet` <--> peering with virtual network `vnet-funcapp-dev`).
 
@@ -207,6 +207,6 @@ Finally, since my architecture uses private endpoints, I need to add a Virtual N
 
 ## B. Summary
 
-I have completed the configuration of a Managed DevOps Pool and added it to our private network to enable deployments within our private architecture. With this new service now in public preview, Microsoft introduces a highly anticipated feature in the DevOps world: setting up private DevOps agents.
+I have completed the configuration of the Managed DevOps Pool and added it to a private network to enable deployments within the private architecture. With this new service now in public preview, Microsoft introduces a highly valuable feature in the DevOps world: setting up private DevOps agents.
 
 In addition to this networking feature, other key features have been added. I encourage you to read the official blog for more information: [Managed DevOps Pools](https://devblogs.microsoft.com/devops/managed-devops-pools/).
