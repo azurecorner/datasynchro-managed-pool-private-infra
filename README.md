@@ -5,7 +5,7 @@ In this context, it will not be possible to deploy from Azure DevOps or GitHub A
 
 For more information, please refer to the following link: [Learn more about Azure DevOps Hosted Agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml)
 
-Several solutions have been considered by the DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
+Several solutions have been considered by DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
 
 In my previous article, [Azure DevOps Private Build Agent using Azure Container Instance and Terraform](https://azurewarriors.com/index.php/2024/02/25/azure-devops-private-build-agent-using-azure-container-instance-and-terraform/), I showed how to create private build agents using Docker, Azure Container Instance, and Terraform.
 
@@ -77,10 +77,10 @@ In fact, your identity is used to create an agent pool in your Azure DevOps orga
 
 
 3. **Create a Dev Center and a Dev Center project:** <br>
-Before creating a managed devops pool, we must first create a dev center and a dev center project. <br>
+Before creating a managed devops pool, you must first create a dev center and a dev center project. <br>
 For more information on the steps, please refer to the following link: https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/quickstart-azure-portal?view=azure-devops
 
-To do this, we will create a resource group: `RG_MANAGED_DEVOPS_POOL`. <br>
+To  create a dev center and a dev center project, you will create a resource group: `ex RG_MANAGED_DEVOPS_POOL`. <br>
 Then, in your Azure portal, search for "Dev centers" and click on create as follows:
    
    ![1  dev center](https://github.com/user-attachments/assets/71805f1d-5b37-470a-b299-c590839d6668)
