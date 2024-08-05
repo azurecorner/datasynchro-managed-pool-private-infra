@@ -186,6 +186,7 @@ To resolve this issue, I will add the Managed DevOps Pools to a virtual network 
 
 Open your Managed DevOps Pool under settings, select "Networking," and then click on "Agents injected into existing virtual network."
 Click "Configure" and select our virtual network and subnet.
+The subnet should be delegated to Microsoft.DevOpsInfrastructure/pools
 
 ![5a  networking](https://github.com/user-attachments/assets/f6cb85fa-bad1-4bde-831c-0e8702c50d5d)
 
