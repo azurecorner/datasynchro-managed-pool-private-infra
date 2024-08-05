@@ -5,7 +5,7 @@ In this context, it will not be possible to deploy from Azure DevOps or GitHub A
 
 For more information, please refer to the following link: [Learn more about Azure DevOps Hosted Agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml)
 
-Several solutions have been considered by the DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
+Several solutions have been considered by DevOps teams to deploy in a private environment from GitHub Actions or Azure DevOps.
 
 In my previous article, [Azure DevOps Private Build Agent using Azure Container Instance and Terraform](https://azurewarriors.com/index.php/2024/02/25/azure-devops-private-build-agent-using-azure-container-instance-and-terraform/), I showed how to create private build agents using Docker, Azure Container Instance, and Terraform.
 
