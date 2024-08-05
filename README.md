@@ -210,3 +210,13 @@ Finally, since my architecture uses private endpoints, I need to add a Virtual N
 I have completed the configuration of the Managed DevOps Pool and added it to a private network to enable deployments within the private architecture. With this new service now in public preview, Microsoft introduces a highly valuable feature in the DevOps world: setting up private DevOps agents.
 
 In addition to this networking feature, other key features have been added. I encourage you to read the official blog for more information: [Managed DevOps Pools](https://devblogs.microsoft.com/devops/managed-devops-pools/).
+
+## C. Related Posts
+
+- [Introducing Azure DevOps Managed DevOps pools!](https://bjompen.com/#/posts/azdo.mdp)
+
+- [A first look at using Azure Managed DevOps Pools](https://blogs.blackmarble.co.uk/rfennell/a-first-look-at-using-azure-mdp/)
+
+- [Fixes for issues moving from on-premise Azure DevOps agents to Azure Managed DevOps Pool agents](https://blogs.blackmarble.co.uk/rfennell/fixing-issues-moving-from-on-premise-azdo-agent-to-mdp-hosted-agents/)
+
+- [A first look at revolutionizing your cloud deployments with Azure Managed DevOps Pools](https://www.azureviking.com/post/a-first-look-at-revolutionizing-your-cloud-deployments-with-azure-managed-devops-pools)
