@@ -9,7 +9,7 @@ Several solutions have been considered by DevOps teams to deploy in a private en
 
 In my previous article, [Azure DevOps Private Build Agent using Azure Container Instance and Terraform](https://azurewarriors.com/index.php/2024/02/25/azure-devops-private-build-agent-using-azure-container-instance-and-terraform/), I showed how to create private build agents using Docker, Azure Container Instance, and Terraform.
 
-As a Microsoft MVP, I had the privilege of participating in a private preview of the Managed DevOps Pools, which will completely change the way we design private DevOps agents.
+As a Microsoft MVP, I had the privilege of participating in a private preview of the Managed DevOps Pools, which will completely change the way to design private DevOps agents.
 
 For more information on the topic of Managed DevOps Pools, please refer to the blog [Announcing the Public Preview of Managed DevOps Pools (MDP) for Azure DevOps](https://devblogs.microsoft.com/devops/managed-devops-pools/).
 
@@ -80,8 +80,8 @@ In fact, your identity is used to create an agent pool in your Azure DevOps orga
 Before creating a managed devops pool, you must first create a dev center and a dev center project. <br>
 For more information on the steps, please refer to the following link: https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/quickstart-azure-portal?view=azure-devops
 
-To  create a dev center and a dev center project, you will create a resource group: `ex RG_MANAGED_DEVOPS_POOL`. <br>
-Then, in your Azure portal, search for "Dev centers" and click on create as follows:
+To create a dev center and a dev center project, I will create a resource group: `ex RG_MANAGED_DEVOPS_POOL`. <br>
+Then, in Azure portal, search for "Dev centers" and click on create as follows:
    
    ![1  dev center](https://github.com/user-attachments/assets/71805f1d-5b37-470a-b299-c590839d6668)
 
@@ -107,7 +107,8 @@ Fill in the necessary information:
 - In "Azure DevOps organization," **provide your DevOps organization** (in my case, it's https://dev.azure.com/datasynchro). <br>
 - Name your pool (datasynchro-managed-devops-pool-ado in my case). <br>
 - For the rest, you can leave the default configuration or adjust it according to your requirements in terms of maximum agents, agent size, OS disk type, and images used by the agents.
-Click "Next."
+
+Click "Next." to continue
 
 ![3b  managed devops pool](https://github.com/user-attachments/assets/de02d9bf-d2ee-4fbd-9b40-770375b7a842)
 
@@ -141,7 +142,7 @@ The previously configured pool should be displayed as shown in the following fig
 5. **Configuring the Image:**
 
 Managed DevOps Pools offer several options for configuring the images that run on the virtual machines, allowing pipelines to execute in the pool. <br>
-We can create our pool with the following options:
+You can create your pool with the following options:
 - Use virtual machine images from Azure Marketplace.
 - Use our own custom images from the Azure Compute Gallery.
 - Use the same images as the Microsoft-hosted agents in Azure Pipelines.
@@ -151,7 +152,7 @@ For more information on configuring images, please refer to the following link: 
 
    ![4a  Configure image](https://github.com/user-attachments/assets/f0dc08fc-b013-4eda-9cfe-2a4304f5663d)
 
-We will use the 2 images Azure Pipelines Windows Server 2022 and Ubuntu 20.04 as they contain the necessary tools to configure our pipelines without needing to install additional tools:
+I will use the 2 images Azure Pipelines Windows Server 2022 and Ubuntu 20.04 as they contain the necessary tools to configure our pipelines without needing to install additional tools:
 - [Windows Server 2022 Readme](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md)
 - [Ubuntu 20.04 Readme](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md)
 
@@ -162,7 +163,7 @@ Click "Add" then "Apply."
    ![4c  Configure image](https://github.com/user-attachments/assets/306a0333-9437-4e21-9be5-0a678cf3782c)
 
 7. **Configuring the Build Pipeline:** <br>
-   Our Managed DevOps Pool configuration is ready and operational. In this section, we will create a pipeline in Azure DevOps and use our Managed DevOps Pool.
+   Your Managed DevOps Pool configuration is now ready and operational. In this section, I will create a pipeline in Azure DevOps using the Managed DevOps Pools.
 
    To do this, simply replace the default image (`vmImage: ubuntu-latest`) with our Managed DevOps Pool (`name: datasynchro-managed-devops-pool-ado`).
 
@@ -176,10 +177,10 @@ Click "Add" then "Apply."
 
 ## B. Using the Managed DevOps Pool in a Private Network
 
-In Part A, we completed the configuration of our Managed DevOps Pool, which is operational for deployments in an unrestricted network architecture. 
+In Part A, I completed the configuration of the Managed DevOps Pool, which is operational for deployments in an unrestricted network architecture. 
 Indeed, in our architecture setup (see Figure A), the function app and the storage account are private, so the default agents like `ubuntu-latest` or `windows-latest` will not be able to deploy code to the function app because the VMs cannot access our private network.
 
-To resolve this issue, we will add our Managed DevOps Pool to a virtual network (our internal network).
+To resolve this issue, I will add the Managed DevOps Pools to a virtual network (internal network).
 
 1. **Configuring Networking:**
 
@@ -192,13 +193,13 @@ Click "Configure" and select our virtual network and subnet.
 
 Our Managed DevOps Pool is configured in a VNet (`managed-devops-pool-vnet`) which is different from the VNet where our function app is configured (`vnet-funcapp-dev`).
 
-Therefore, we need to set up peering between the two VNets in both directions (VNet `managed-devops-pool-vnet` <--> peering with VNet `vnet-funcapp-dev`).
+Therefore, I need to set up peering between the two virtual networks in both directions (virtual network `managed-devops-pool-vnet` <--> peering with virtual network `vnet-funcapp-dev`).
 
 ![6a  peering](https://github.com/user-attachments/assets/70a1052e-fa1f-4b0d-ac2d-e3ad74603269)
 
 ![6b  peering](https://github.com/user-attachments/assets/bd1f7c00-d717-4daa-833a-0e44c66fb0c2)
 
-Finally, since our architecture uses private endpoints, we need to add a Virtual Network Link between our virtual networks (`vnet-managed-devops-pool-vnet` and `vnet-funcapp-dev`) and the private DNS zones (`privatelink.blob.core.windows.net` for the storage account and `privatelink.azurewebsites.net` for the function app).
+Finally, since my architecture uses private endpoints, I need to add a Virtual Network Link between the virtual networks (`vnet-managed-devops-pool-vnet` and `vnet-funcapp-dev`) and the private DNS zones (`privatelink.blob.core.windows.net` for the storage account and `privatelink.azurewebsites.net` for the function app).
 
 ![7a vnet link](https://github.com/user-attachments/assets/186f4d16-d92c-4017-97f2-6448530ae0c0)
 
@@ -206,6 +207,6 @@ Finally, since our architecture uses private endpoints, we need to add a Virtual
 
 ## B. Summary
 
-We have completed the configuration of a Managed DevOps Pool and added it to our private network to enable deployments within our private architecture. With this new service now in public preview, Microsoft introduces a highly anticipated feature in the DevOps world: setting up private DevOps agents.
+I have completed the configuration of a Managed DevOps Pool and added it to our private network to enable deployments within our private architecture. With this new service now in public preview, Microsoft introduces a highly anticipated feature in the DevOps world: setting up private DevOps agents.
 
 In addition to this networking feature, other key features have been added. I encourage you to read the official blog for more information: [Managed DevOps Pools](https://devblogs.microsoft.com/devops/managed-devops-pools/).
